@@ -1,0 +1,58 @@
+Sub qtybrkup_summary()
+
+'        With Worksheets(2).Range("a:a")
+'
+'
+'
+'         c1 = InputBox("SH no", , "SH-0")
+'         c2 = InputBox("SH no", , "SH-0")
+'
+'         Set c11 = .Find(c1, LookIn:=xlValues)
+'         Set c22 = .Find(c2, LookIn:=xlValues)
+'
+'         first = Mid(c11.Address, 4, Len(c11.Address)) + 1
+'         last = Mid(c22.Address, 4, Len(c22.Address)) - 3
+'         'MsgBox str1 & "  " & str2
+'        End With
+        
+        first = InputBox("first row")
+        last = InputBox("last row")
+'
+        Sheets("temp").UsedRange.ClearContents
+        Z = 1
+        For i = first To last
+        msg = ""
+        If IsEmpty(Range("D" & i).Value) = False Then
+            
+            
+            For j = 5 To 30 'Step 2 ' bldg type row-change this
+                    
+                                 
+                    If IsNumeric(Cells(i, j).Value) = True Then
+                        Title = Cells(2, j).Value ' Bldg type col- change this
+                        num = Cells(i, j).Value
+                    
+                        
+                        If num > 0 Then
+                            msg = msg & Title & " (" & num & ") "
+                        End If
+                    End If
+                    
+            Next j
+            'w - ei
+            Range("AE" & i).Value = msg ' qty brkup summary col - change this
+            Range("AE" & i).WrapText = True
+            
+            Sheets("temp").Range("A" & Z).Value = msg
+            'MsgBox msg
+            Z = Z + 1
+        End If
+        
+        Next i
+ 
+
+
+End Sub
+
+
+
