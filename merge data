@@ -1,0 +1,13 @@
+Sub merge_with_data_preserved()
+Dim d As String
+    For Each c In Selection
+    If c.Value = "" Then
+    Else
+    d = d & c.Value & vbLf
+    End If
+    Next c
+    Selection.Clear
+    'Selection.Merge
+    Selection.Rows(1).Value = d
+    'Selection.EntireRow.AutoFit
+End Sub
