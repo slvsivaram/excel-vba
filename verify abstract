@@ -1,0 +1,233 @@
+Sub VerifyAbstract()
+'Worksheets("Part C").Activate
+
+'Set find1 = Worksheets(2).Range("A1:A12000").Find(What:="SH-01", LookIn:=xlValues)
+'Var x = find1.Address
+'Set find2 = Worksheets(2).Range("A1:A12000").Find(What:="SH-02", LookIn:=xlValues)
+'Var y = find2.Address
+
+ Set rng = Range("A16:A17342")
+ 'A16:A16453
+'Set Rng = Selection
+'For i = 1 To Worksheets.Count
+'    If Worksheets(i).Name = "Totals" Then
+'        exists = True
+'    End If
+'Next i
+'
+'If Not exists Then
+'    Worksheets.Add.Name = "Totals"
+'End If
+
+'Dim ws, newWS As Worksheet
+'If Not wsExists("Totals") Then
+'            Set newWS = ThisWorkbook.Worksheets.Add(Before:=Worksheets("Part C"))
+'            newWS.Name = "Totals"
+'End If
+
+
+'lastRow = ActiveSheet.UsedRange.Rows.count
+
+
+'Set find1 = Worksheets(2).Range("A1:A12000").Find(What:="SH-10", LookIn:=xlValues)
+' x = find1.Row
+' MsgBox Cells(x, 1).Row
+'Set find2 = Worksheets(2).Range("A1:A12000").Find(What:="SH-11", LookIn:=xlValues)
+' y = find2.Row
+'MsgBox Cells(y, 1).Row
+''Range ("A13:A1300")
+''Set Rng = Range(Cells(x, 1), Cells(y, 1))
+'Range(Cells(x, 1), Cells(y, 1)).Select
+Sheets("Totals").Range("A1").Value = "SH"
+Sheets("Totals").Range("B1").Value = "Item No"
+Sheets("Totals").Range("C1").Value = "Sub Item No"
+
+Sheets("Totals").Range("D1").Value = "UTD part rate"
+Sheets("Totals").Range("E1").Value = "UTD qty"
+Sheets("Totals").Range("F1").Value = "UTD Amt"
+
+'Sheets("Totals").Range("G1").Value = "SP part rate"
+Sheets("Totals").Range("H1").Value = "SP qty"
+Sheets("Totals").Range("I1").Value = "SP Amt"
+
+Sheets("Totals").Range("G1").Value = "UTD Amt Chk"
+Sheets("Totals").Range("J1").Value = "SP Amt Chk"
+
+Sheets("Totals").Range("M1").Value = "Row Ref"
+
+Sheets("Totals").Range("O1").Value = "PBR Qty"
+Sheets("Totals").Range("P1").Value = "TBR Qty"
+Sheets("Totals").Range("Q1").Value = "UPD-R Qty Chk"
+
+Sheets("Totals").Range("R1").Value = "PBC Qty"
+Sheets("Totals").Range("S1").Value = "TBC Qty"
+Sheets("Totals").Range("T1").Value = "UPD-C Qty Chk"
+
+Sheets("Totals").Range("U1").Value = "Remarks"
+
+
+Sheets("Totals").Rows("2:" & Rows.Count).ClearContents
+
+n = 3
+'Sum = 0
+
+
+For Each c In rng
+
+    On Error Resume Next
+    r = c.Row
+   
+             If IsEmpty(Cells(r, "A").Value) = False Then
+            
+               If IsNumeric(Left(Cells(r, "A").Value, 1)) = False Then
+                 If (Left(Cells(r, "A").Value, 2) = "SH") Or (Left(Cells(r, "A").Value, 4) = "HVAC") Then
+                 Sheets("Totals").Range("A" & n).Value = Cells(r, "A")
+                 Else
+                 Sheets("Totals").Range("C" & n).Value = Cells(r, "A")
+                 End If
+               End If
+               
+               If IsNumeric(Cells(r, "A").Value) = True Or IsNumeric(Left(Cells(r, "A").Value, 1)) = True Then
+               Sheets("Totals").Range("B" & n).Value = Cells(r, "A")
+               
+               
+               End If
+            
+            
+             
+             End If
+       
+      
+               
+
+               
+              If IsNumeric(Cells(r, "M").Value) = True And Cells(r, "M").Value <> 0 Then
+'
+               Sheets("Totals").Range("D" & n).Value = Cells(r, "D") 'Part rate
+               
+               If Cells(r, "K").Value <> 0 Then                       'utd qty
+                Sheets("Totals").Range("E" & n).Value = Cells(r, "K")
+               Else
+                Sheets("Totals").Range("E" & n).Value = Cells(r, "L")
+               End If
+               
+               
+               Sheets("Totals").Range("F" & n).Value = Cells(r, "M") 'utd amt
+               
+               
+               If Cells(r, "K").Value > 0 Then
+               
+               Sheets("Totals").Range("O" & n).Value = Cells(r, "G") 'PBR-Qty
+               Sheets("Totals").Range("P" & n).Value = Cells(r, "I") 'TBR-Qty
+               
+               Else
+               Sheets("Totals").Range("R" & n).Value = Cells(r, "H") 'PBC-Qty
+               Sheets("Totals").Range("S" & n).Value = Cells(r, "J") 'TBC-Qty
+               
+               End If
+               
+'               Sheets("Totals").Range("R" & n).Value = Cells(r, "G") 'PBR-Qty
+'               Sheets("Totals").Range("P" & n).Value = Cells(r, "I") 'TBR-Qty
+'
+                If Cells(r, "N").Value > 0 Then
+                    
+                    If Cells(r, "I").Value > 0 Then
+                    Sheets("Totals").Range("H" & n).Value = Cells(r, "I") 'sp qty
+                    Else
+                    Sheets("Totals").Range("H" & n).Value = Cells(r, "J")
+                    End If
+                    Sheets("Totals").Range("I" & n).Value = Cells(r, "N") 'sp amt
+                    
+                    
+                End If
+                
+                
+                
+               
+                Sheets("Totals").Range("M" & n).Value = c.Row 'row no of abstract
+                '==================================================
+              
+                ' UTD amt chk
+                If (Sheets("Totals").Range("F" & n).Value = Sheets("Totals").Range("D" & n).Value * Sheets("Totals").Range("E" & n).Value) Then
+                Sheets("Totals").Range("G" & n).Value = "OK"
+                Else
+                Sheets("Totals").Range("G" & n).Value = "CHK"
+                End If
+               '================================================
+                ' SP amt chk
+                
+                If Cells(r, "N").Value > 0 Then
+                    If (Sheets("Totals").Range("I" & n).Value = Sheets("Totals").Range("D" & n).Value * Sheets("Totals").Range("H" & n).Value) Then
+                    Sheets("Totals").Range("J" & n).Value = "OK"
+                    Else
+                    Sheets("Totals").Range("J" & n).Value = "CHK"
+                    End If
+                End If
+               '=================================================
+               'utd-Rec qty chk
+               
+               If Cells(r, "M").Value > 0 Then
+                    
+                 If Cells(r, "K").Value > 0 Then
+                    
+                    If (Sheets("Totals").Range("K" & n).Value = Sheets("Totals").Range("G" & n).Value * Sheets("Totals").Range("I" & n).Value) Then
+                    Sheets("Totals").Range("Q" & n).Value = "OK"
+                    Else
+                    Sheets("Totals").Range("Q" & n).Value = "CHK"
+                    End If
+                 Else
+                    If (Sheets("Totals").Range("L" & n).Value = Sheets("Totals").Range("H" & n).Value * Sheets("Totals").Range("J" & n).Value) Then
+                    Sheets("Totals").Range("T" & n).Value = "OK"
+                    Sheets("Totals").Range("U" & n).Value = Cells(r, "B").Value
+                    Else
+                    Sheets("Totals").Range("T" & n).Value = "CHK"
+                    Sheets("Totals").Range("U" & n).Value = Cells(r, "B").Value
+                    End If
+                End If
+              
+              End If
+               
+               
+               
+               '=================================================
+               
+               
+               
+               
+               
+               
+               n = n + 1
+                 
+
+              
+            
+                
+                
+        End If
+       
+
+                   
+       
+Next c
+
+'Sheets("Totals").Select
+'
+'lrow = Cells(Rows.Count, 12).End(xlUp).Row
+'Set Rng1 = Range("B3:B325")
+'
+'
+'    For Each c1 In Rng1
+'    r1 = c1.Row
+'
+'        If IsEmpty(Cells(r1 + 1, "B").Value) = True Then
+'        x = Cells(r1 + 1, "H").Value
+'        Cells(r1, "H").Value = Cells(r1, "H").Value + x
+'        Rows(r1 + 1).Delete
+'        End If
+'    Next c1
+
+
+
+End Sub
+
+
